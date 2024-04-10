@@ -45,14 +45,20 @@ model = train_model(X_train, y_train)
 # Save the model and the encoder
 model_path = os.path.join(project_path, "model", "model.pkl")
 save_model(model, model_path)
-print("Model saved to:", model_path)
 
 encoder_path = os.path.join(project_path, "model", "encoder.pkl")
 save_model(encoder, encoder_path)
-print("Encoder saved to:", encoder_path)
+
+# Load the encoder
+encoder_path = os.path.join(project_path, "model", "encoder.pkl")
+
+try:
+    encoder = load_model(encoder_path)
+    print("Encoder loaded successfully.")
+except Exception as e:
+    print("Error loading Encoder:", e)
 
 # Load the model
-print("Loading model from:", model_path)
 model = load_model(model_path)
 
 # Make predictions on the test dataset
