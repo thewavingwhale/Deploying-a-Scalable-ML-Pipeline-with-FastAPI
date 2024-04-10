@@ -84,11 +84,13 @@ def save_model(model, path):
     """
     with open(path, 'wb') as f:
         pickle.dump(model, f)
-
+    print(f"Model saved to {path}")
+    
 def load_model(path):
     """ Loads pickle file from `path` and returns it."""
     with open(path, 'rb') as f:
         model = pickle.load(f)
+    print(f"Loading model from {path}")
     return model
 
 def performance_on_categorical_slice(
@@ -129,12 +131,13 @@ def performance_on_categorical_slice(
     """
     # Process data
     X_slice, y_slice, _, _ = process_data(
-        data, categorical_features, label, encoder, lb, training=False
+       X=data, categorical_features=categorical_features, label=label, training=False, encoder=encoder, lb=lb
     )
     
-    # Filter data based on slice_value
-    X_slice = X_slice[X_slice[column_name] == slice_value]
-    y_slice = y_slice[X_slice[column_name] == slice_value]
+    # Filter data based on slice_value if it's a valid index
+    if isinstance(slice_value, (int, float)):
+        X_slice = X_slice[X_slice[column_name] == slice_value]
+        y_slice = y_slice[X_slice[column_name] == slice_value]
     
     # Make predictions
     preds = inference(model, X_slice)

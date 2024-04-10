@@ -45,10 +45,14 @@ model = train_model(X_train, y_train)
 # Save the model and the encoder
 model_path = os.path.join(project_path, "model", "model.pkl")
 save_model(model, model_path)
+print("Model saved to:", model_path)
+
 encoder_path = os.path.join(project_path, "model", "encoder.pkl")
 save_model(encoder, encoder_path)
+print("Encoder saved to:", encoder_path)
 
 # Load the model
+print("Loading model from:", model_path)
 model = load_model(model_path)
 
 # Make predictions on the test dataset
@@ -59,12 +63,13 @@ p, r, fb = compute_model_metrics(y_test, preds)
 print(f"Precision: {p:.4f} | Recall: {r:.4f} | F1: {fb:.4f}")
 
 # Compute the performance on model slices
-with open("slice_output.txt", "w") as f:
-    for col in cat_features:
-        for slicevalue in sorted(test[col].unique()):
-            count = test[test[col] == slicevalue].shape[0]
-            p, r, fb = performance_on_categorical_slice(
-                test, col, slicevalue, cat_features, "salary", encoder, lb, model
-            )
-            f.write(f"{col}: {slicevalue}, Count: {count:,}\n")
-            f.write(f"Precision: {p:.4f} | Recall: {r:.4f} | F1: {fb:.4f}\n")
+for col in cat_features:
+    # iterate through the unique values in one categorical feature
+    for slicevalue in sorted(test[col].unique()):
+        count = test[test[col] == slicevalue].shape[0]
+        p, r, fb = performance_on_categorical_slice(
+            test, col, slicevalue, cat_features, "salary", encoder, lb, model
+        )
+        with open("slice_output.txt", "a") as f:
+            print(f"{col}: {slicevalue}, Count: {count:,}", file=f)
+            print(f"Precision: {p:.4f} | Recall: {r:.4f} | F1: {fb:.4f}", file=f)

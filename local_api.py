@@ -36,6 +36,9 @@ r_post = requests.post(url_post, json=data)
 # Print the status code
 print("POST Request Status Code:", r_post.status_code)
 
-# Print the result
-print("Result from POST Request:", r_post.json()["result"])
-
+# Try to parse the JSON response
+try:
+    result = r_post.json()["result"]
+    print("Result from POST Request:", result)
+except json.JSONDecodeError:
+    print("Error: Unable to decode response JSON. The server might have returned an empty response or a response in an unexpected format.")
