@@ -11,11 +11,11 @@ The model is intended to be used for predicting income levels based on demograph
 
 ## Training Data
 
-The model was trained using information from the Census data. This data includes details like age, education, job, and marital status, along with income levels labeled as '>50K' and '<=50K'.
+The model was trained using information from the Census data. This data includes details like age, education, job, and marital status, along with income levels labeled as '>50K' and '<=50K'. 80% of the Census data is used for training data.
 
 ## Evaluation Data
 
-To test the model's performance, a separate set of data was kept aside from the same Census data. This helps to check how well the model works on new, unseen data without any bias from the training process.
+To test the model's performance, a separate set of data was kept aside from the same Census data. This helps to check how well the model works on new, unseen data without any bias from the training process. 20% of the Census data is used for evaluation data.
 
 ## Metrics
 
